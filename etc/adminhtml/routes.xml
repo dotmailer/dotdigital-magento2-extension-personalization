@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="dd_personalization" frontName="dd_personalization">
+            <module name="Dotdigitalgroup_Personalization" before="Magento_Backend"/>
+        </route>
+    </router>
+</config>

@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+    <tab id="dd_personalization" translate="label" sortOrder="510" class="fr-config-tab">
+        <label>Dotdigital Personalization</label>
+    </tab>
+        <section id="dd_personalization_script" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Dotdigital Personalization script setup</label>
+            <tab>dd_personalization</tab>
+            <resource>Dotdigitalgroup_Personalization::configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Script Configuration</label>
+                <field id="enable_fr_script" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Dotdigital Personalization Script</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="account_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Account Id</label>
+                    <comment><![CDATA[ You can find your Account Id within your <a href="https://admin.dotdigital.com/" target="_blank">Dotdigital Personalization admin area</a>. ]]>
+                    </comment>
+                </field>
+                <field id="region" translate="label" sortOrder="3" type="select" showInStore="0" showInWebsite="1" showInDefault="1">
+                    <label>Region</label>
+                    <source_model>Dotdigitalgroup\Personalization\Model\Config\Source\Region</source_model>
+                </field>
+                <field id="script_hostname" type="text" showInStore="0" showInWebsite="0" showInDefault="0" />
+                <field id="event_hostname" type="text" showInStore="0" showInWebsite="0" showInDefault="0" />
+            </group>
+            <group id="support" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Support</label>
+                <field id="enable_ddl" translate="label" type="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Plugin Support</label>
+                    <comment><![CDATA[ For issues, contact support: <a href="mailto:support@dotdigital.com?Subject=Dotdigital%20Personalization%20Magento%20Support%20Request" target="_blank">support@dotdigital.com</a> ]]></comment>
+                </field>
+                <field id="website_id" translate="label" type="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Dotdigital Personalization Support</label>
+                    <comment><![CDATA[ For issues with the Dotdigital Personalization functionality, contact support: <a href="mailto:support@dotdigital.com?Subject=Dotdigital%20Personalization%20Magento%20Support%20Request" target="_blank">support@dotdigital.com</a> ]]></comment>
+                </field>
+            </group>
+        </section>
+        <section id="dd_personalization_cart" translate="label" type="text" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Cart Rebuild Settings</label>
+            <tab>dd_personalization</tab>
+            <resource>Dotdigitalgroup_Personalization::configuration</resource>
+            <group id="cart_rebuild" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cart Rebuild Settings</label>
+                <field id="redirect_page" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cart Rebuild Redirect Page</label>
+                    <source_model>Dotdigitalgroup\Personalization\Model\Config\Source\RedirectPages</source_model>
+                    <comment><![CDATA[ When using the cart rebuild controller at /cartrebuild/ this setting allows you to choose which page to redirect to after rebuilding the cart. ]]></comment>
+                </field>
+                <field id="custom_page" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Cart Rebuild Redirect Page URL</label>
+                    <comment><![CDATA[ Supply a custom page URL (eg: checkout/cart/) for the cart rebuild function to redirect to. Do NOT include a leading slash. ]]></comment>
+                    <depends>
+                        <field id="redirect_page">2</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="dd_personalization_sync" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Product data sync setup</label>
+            <tab>dd_personalization</tab>
+            <resource>Dotdigitalgroup_Personalization::configuration</resource>
+            <group id="api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product data sync setup</label>
+                <field id="connected" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable integration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ Once enabled, webhooks are sent to Dotdigital Personalization and product data begins syncing. Configure product data sync under Digital Data Layer and product data settings. ]]></comment>
+                </field>
+                <field id="webhook_endpoint" translate="label" type="label" sortOrder="2" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Webhook Endpoint URL</label>
+                    <comment><![CDATA[ The URL where webhook notifications will be sent, configured automatically on setup. ]]></comment>
+                </field>
+                <field id="access_token" translate="label" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Access token</label>
+                    <comment>Enter this token in Dotdigital Personalization to authenticate the connection.</comment>
+                    <frontend_model>Dotdigitalgroup\Personalization\Block\Adminhtml\Config\AccessToken</frontend_model>
+                </field>
+            </group>
+        </section>
+        <section id="dd_personalization_data_layer" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Digital Data Layer and product data settings</label>
+            <tab>dd_personalization</tab>
+            <resource>Dotdigitalgroup_Personalization::configuration</resource>
+            <group id="data_layer" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Digital Data Layer</label>
+                <field id="enable_ddl" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Digital Data Layer</label>
+                    <source_model>Dotdigitalgroup\Personalization\Model\Config\Source\DataLayerOutput</source_model>
+                    <comment><![CDATA[ If enabled, choose a minimal or full data sync. ]]></comment>
+                </field>
+                <field id="expose_on_all_pages" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Expose product data on all pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ When enabled, the Digital Data Layer object is exposed on every page of your website. ]]></comment>
+                </field>
+                <field id="expose_on_pages" translate="label" type="multiselect" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Expose product data on selected pages</label>
+                    <source_model>Dotdigitalgroup\Personalization\Model\Config\Source\StorePages</source_model>
+                    <comment><![CDATA[ Choose the pages you want to expose product data on. Hold CTRL to select multiple pages. ]]></comment>
+                    <depends>
+                        <field id="expose_on_all_pages">0</field>
+                    </depends>
+                </field>
+                <field id="expose_custom_handles" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom product exposure</label>
+                    <comment><![CDATA[ To expose product data on additional pages, enter the LAYOUT HANDLES of the pages in CSV format. ]]></comment>
+                    <depends>
+                        <field id="expose_on_all_pages">0</field>
+                    </depends>
+                </field>
+                <field id="purchase_complete_handles" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom purchase complete handling</label>
+                    <comment><![CDATA[ To expose transaction data on additional pages, enter the LAYOUT HANDLES of the pages in CSV format. ]]></comment>
+                </field>
+                <field id="enable_user_group" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable user group exposure</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ Expose the group of a logged in user. ]]></comment>
+                </field>
+            </group>
+            <group id="product_data" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product data</label>
+                <comment><![CDATA[Use these settings to configure both product data exposure for the Digital Data Layer and background product data sync.]]></comment>
+                <field id="product_attributes" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product attributes</label>
+                    <source_model>Dotdigitalgroup\Personalization\Model\Config\Source\ProductAttributes</source_model>
+                    <comment><![CDATA[ Select the custom product attributes to sync and expose to the DDL. Hold CTRL to choose multiple attributes. ]]></comment>
+                </field>
+                <field id="stock_level" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Stock level data</label>
+                    <source_model>Dotdigitalgroup\Personalization\Model\Config\Source\StockExposure</source_model>
+                    <comment><![CDATA[ If enabled, choose the level of stock data to sync and expose. ]]></comment>
+                </field>
+                <field id="enable_ratings" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable product ratings</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ Enable to sync and expose average rating and number of ratings for each product. ]]></comment>
+                </field>
+                <field id="enable_linked_products" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable linked product exposure</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ Enable to sync and expose data for configurable, bundle, and grouped products. ]]></comment>
+                </field>
+                <field id="enable_parent_products" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable parent product exposure</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ Enable to sync and expose parent products for configurable, bundle, and grouped products. ]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
