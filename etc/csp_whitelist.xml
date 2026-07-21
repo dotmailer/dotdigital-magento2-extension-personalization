@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="dotdigital-cdn" type="host">*.dycdn.net</value>
+                <value id="cloudfront-a" type="host">dn1i8v75r669j.cloudfront.net</value>
+                <value id="cloudfront-b" type="host">dkpklk99llpj0.cloudfront.net</value>
+                <value id="cloudfront-c" type="host">ds9p2a60lh6fp.cloudfront.net</value>
+                <value id="cloudfront-d" type="host">d1y9qtn9cuc3xw.cloudfront.net</value>
+                <value id="cloudfront-e" type="host">d81mfvml8p5ml.cloudfront.net</value>
+                <value id="freshrelevance_com" type="host">*.freshrelevance.com</value>
+                <value id="dotdigital_com" type="host">*.dotdigital.com</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="dotdigital-cdn" type="host">*.dycdn.net</value>
+                <value id="freshrelevance_com" type="host">*.freshrelevance.com</value>
+                <value id="freshrelevance-wss" type="host">wss://*.freshrelevance.com</value>
+                <value id="dotdigital-wss" type="host">wss://*.dycdn.net</value>
+                <value id="cloudfront-a" type="host">dn1i8v75r669j.cloudfront.net</value>
+                <value id="dotdigital_com" type="host">*.dotdigital.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="dotdigital-cdn" type="host">*.dycdn.net</value>
+                <value id="freshrelevance_com" type="host">*.freshrelevance.com</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="dotdigital-cdn" type="host">*.dycdn.net</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

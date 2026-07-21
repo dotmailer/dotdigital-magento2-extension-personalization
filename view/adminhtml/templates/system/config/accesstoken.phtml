@@ -1,0 +1,19 @@
+<?php
+/** @var \Dotdigitalgroup\Personalization\Block\Adminhtml\Config\AccessToken $block */
+// phpcs:disable Magento2.Legacy.EscapeMethodsOnBlockClass
+?>
+<textarea id="<?= $block->escapeHtmlAttr($block->getFieldHtmlId()) ?>" disabled style="width:100%;">
+    <?= $block->escapeHtml(__('Loading token...')) ?>
+</textarea>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Dotdigitalgroup_Personalization/js/accessToken": {
+                "url": "<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
+                "fieldId": "<?= $block->escapeJs($block->getFieldHtmlId()) ?>"
+            }
+        }
+    }
+</script>
+<?php // phpcs:enable ?>

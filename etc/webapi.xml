@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/dd-personalization/product" method="POST">
+        <service class="Dotdigitalgroup\Personalization\Api\ProductDataInterface" method="getProduct"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+    <route url="/V1/dd-personalization/products" method="POST">
+        <service class="Dotdigitalgroup\Personalization\Api\ProductDataInterface" method="getProducts"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+    <route url="/V1/dd-personalization/store-webhooks" method="GET">
+        <service class="Dotdigitalgroup\Personalization\Api\StoreWebhookInterface" method="getStoreWebhooks"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+    <route url="/V1/dd-personalization/store-webhook" method="GET">
+        <service class="Dotdigitalgroup\Personalization\Api\StoreWebhookInterface" method="getStoreWebhook"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+    <route url="/V1/dd-personalization/store-webhook" method="POST">
+        <service class="Dotdigitalgroup\Personalization\Api\StoreWebhookInterface" method="updateStoreWebhook"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+    <route url="/V1/dd-personalization/store-webhook" method="DELETE">
+        <service class="Dotdigitalgroup\Personalization\Api\StoreWebhookInterface" method="deleteStoreWebhook"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+</routes>

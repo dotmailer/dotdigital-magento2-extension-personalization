@@ -1,0 +1,55 @@
+<?php
+
+use Dotdigitalgroup\Personalization\ViewModel\DefaultView;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var DefaultView $viewModel */
+
+$viewModel = $block->getViewModel();
+
+if (!$viewModel->isScriptEnabled()): ?>
+    <!-- You have successfully installed the Dotdigital Personalization Extension.
+    You haven't enabled our script. With a Dotdigital Personalization account,
+    you can create effortless personalization,
+    live email content and cart and browse abandonment emails.
+    If you want to know more about us, then check us out at https://www.dotdigital.com
+    If you need help with the extension, go to https://www.dotdigital.com/contact -->
+<?php endif; ?>
+
+<?php if ($fullRedirect = $viewModel->getFullRedirect()): ?>
+    <script>window.location.replace("<?= /* @noEscape */ $fullRedirect ?>");</script>
+<?php endif; ?>
+
+<?php if ($viewModel->getCartRefresh()): ?>
+    <script>
+        try {
+            require(['Magento_Customer/js/customer-data'], function (customerData) {
+                var sections = ['cart'];
+                customerData.getInitCustomerData().done(function () {
+                    customerData.invalidate(sections);
+                });
+            });
+        } catch (err) {
+            console.error(err)
+        }
+    </script>
+<?php endif; ?>
+
+<?php if ($viewModel->shouldRender()): ?>
+    <?= /** @noEscape */ $viewModel->renderScript(); ?>
+<?php endif; ?>
+
+<?php if ($viewModel->isPcImageAvailable()): ?>
+    <?= /** @noEscape */ $viewModel->renderPurchaseCompletePixel(); ?>
+<?php endif; ?>
+
+<?php if ($viewModel->isScriptEnabled() && $viewModel->getAccountId() === null): ?>
+    <script>
+        console.log(
+            'You have enabled the Dotdigital Personalization script from the Magento Admin Configuration Panel. ' +
+            'You have not supplied an account ID. ' +
+            'Please go to https://www.dotdigital.com/contact for support on this.'
+        );
+    </script>
+<?php endif; ?>

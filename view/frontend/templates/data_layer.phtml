@@ -1,0 +1,13 @@
+<?php
+
+use Dotdigitalgroup\Personalization\ViewModel\DataLayer;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var DataLayer $viewModel */
+
+$viewModel = $block->getViewModel();
+$context = $block->getData('context');
+if ($viewModel->moduleEnabled()):
+    /* @noEscape */ echo $viewModel->renderSecureDDLData($context);
+endif; ?>
