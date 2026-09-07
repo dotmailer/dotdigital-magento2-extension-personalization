@@ -65,11 +65,17 @@ class WebhookSender
      * @param string $eventType
      * @param array $eventData
      * @param array $storeIds
+     * @param string $connectedConfigPath
      * @return self
      */
-    public function addEvent(string $eventType, array $eventData, array $storeIds): self
-    {
-        $endpoints = $this->getStoreWebhookEndpoints($storeIds);
+    public function addEvent(
+        string $eventType,
+        array $eventData,
+        array $storeIds,
+        string $connectedConfigPath = ConfigInterface::CONFIG_API_CONNECTED
+    ): self {
+        $endpoints = $this->getStoreWebhookEndpoints($storeIds, $connectedConfigPath);
+
         if (count($endpoints) === 0) {
             $this->logger->warning('Webhook event requires a configured webhook endpoint', [
                 'event_type' => $eventType,
@@ -126,14 +132,15 @@ class WebhookSender
      * Get enabled store webhook endpoints.
      *
      * @param array $storeIds
+     * @param string $connectedConfigPath
      * @return array
      */
-    private function getStoreWebhookEndpoints(array $storeIds) : array
+    private function getStoreWebhookEndpoints(array $storeIds, string $connectedConfigPath) : array
     {
         $endpoints = [];
         foreach ($storeIds as $storeId) {
             $isEnabled = $this->scopeConfig->isSetFlag(
-                ConfigInterface::CONFIG_API_CONNECTED,
+                $connectedConfigPath,
                 ScopeInterface::SCOPE_STORE,
                 $storeId
             );

@@ -6,4 +6,7 @@
     <event name="catalog_product_attribute_update_before">
         <observer name="dd_personalization_product_bulk_status_change" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\ProductBulkStatusChange" />
     </event>
+    <event name="checkout_cart_add_product_complete">
+        <observer name="dd_personalization_cart_update" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\CartUpdate" />
+    </event>
 </config>
