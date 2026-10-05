@@ -65,14 +65,14 @@ class WebhookSender
      * @param string $eventType
      * @param array $eventData
      * @param array $storeIds
-     * @param string $connectedConfigPath
+     * @param string|null $connectedConfigPath
      * @return self
      */
     public function addEvent(
         string $eventType,
         array $eventData,
         array $storeIds,
-        string $connectedConfigPath = ConfigInterface::CONFIG_API_CONNECTED
+        ?string $connectedConfigPath = ConfigInterface::CONFIG_API_CONNECTED
     ): self {
         $endpoints = $this->getStoreWebhookEndpoints($storeIds, $connectedConfigPath);
 
@@ -132,20 +132,18 @@ class WebhookSender
      * Get enabled store webhook endpoints.
      *
      * @param array $storeIds
-     * @param string $connectedConfigPath
+     * @param string|null $connectedConfigPath
      * @return array
      */
-    private function getStoreWebhookEndpoints(array $storeIds, string $connectedConfigPath) : array
+    private function getStoreWebhookEndpoints(array $storeIds, ?string $connectedConfigPath): array
     {
         $endpoints = [];
         foreach ($storeIds as $storeId) {
-            $isEnabled = $this->scopeConfig->isSetFlag(
+            if ($connectedConfigPath !== null && !$this->scopeConfig->isSetFlag(
                 $connectedConfigPath,
                 ScopeInterface::SCOPE_STORE,
                 $storeId
-            );
-
-            if (!$isEnabled) {
+            )) {
                 continue;
             }
 

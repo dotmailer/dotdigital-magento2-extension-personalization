@@ -46,6 +46,15 @@ class ProductSave implements ObserverInterface
             'product_id' => $product->getId(),
         ];
 
-        $this->webhookSender->addEvent('product.save', $eventData, $product->getStoreIds())->send();
+        $eventType = [
+            'catalog_product_save_after' => 'product.save',
+            'catalog_product_delete_before' => 'product.deleted',
+        ][$observer->getEvent()->getName()] ?? null;
+
+        if ($eventType === null) {
+            return;
+        }
+
+        $this->webhookSender->addEvent($eventType, $eventData, $product->getStoreIds())->send();
     }
 }
