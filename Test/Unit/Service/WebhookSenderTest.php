@@ -93,6 +93,31 @@ class WebhookSenderTest extends TestCase
         $this->assertInstanceOf(WebhookSender::class, $result);
     }
 
+    public function testAddEventCanSkipConnectionCheck(): void
+    {
+        $scopeConfigMock = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfigMock->expects($this->never())->method('isSetFlag');
+        $scopeConfigMock->expects($this->once())
+            ->method('getValue')
+            ->with(
+                'dd_personalization_sync/api/webhook_endpoint',
+                ScopeInterface::SCOPE_STORE,
+                1
+            )
+            ->willReturn('https://example.com/webhook');
+
+        $webhookSender = new WebhookSender(
+            $this->httpClientMock,
+            $this->loggerMock,
+            $this->jsonSerializerMock,
+            $scopeConfigMock
+        );
+
+        $result = $webhookSender->addEvent('cart.update', ['cart' => 'data'], [1], null);
+
+        $this->assertInstanceOf(WebhookSender::class, $result);
+    }
+
     public function testSendWithNoPayloads(): void
     {
         $webhookSender = $this->createWebhookSenderWithConfig('https://example.com/webhook');

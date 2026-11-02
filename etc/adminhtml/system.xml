@@ -65,15 +65,24 @@
             <group id="api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Product data sync setup</label>
                 <field id="connected" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable integration</label>
+                    <label>Enable product sync</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment><![CDATA[ Once enabled, webhooks are sent to Dotdigital Personalization and product data begins syncing. Configure product data sync under Digital Data Layer and product data settings. ]]></comment>
                 </field>
-                <field id="webhook_endpoint" translate="label" type="label" sortOrder="2" showInDefault="0" showInWebsite="0" showInStore="1">
-                    <label>Webhook Endpoint URL</label>
-                    <comment><![CDATA[ The URL where webhook notifications will be sent, configured automatically on setup. ]]></comment>
+                <field id="connected_cart" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable cart update sync</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[ Once enabled, cart update webhooks are sent to Dotdigital Personalization via the same webhook endpoint used for product updates, but only once Personalization has also enabled cart sync on their side. ]]></comment>
                 </field>
-                <field id="access_token" translate="label" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="webhook_endpoint" translate="label" type="label" sortOrder="3" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Webhook Endpoint URL</label>
+                    <comment><![CDATA[ The URL where webhook notifications will be sent, configured automatically on setup. Shared by both product and cart update webhooks. ]]></comment>
+                </field>
+                <field id="cart_sync_enabled" translate="label" type="label" sortOrder="4" showInDefault="0" showInWebsite="0" showInStore="1">
+                    <label>Cart Sync Status (Personalization)</label>
+                    <comment><![CDATA[ Whether Personalization has enabled cart update sync for this store. Set automatically from the Personalization admin site - not editable here. ]]></comment>
+                </field>
+                <field id="access_token" translate="label" type="textarea" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Access token</label>
                     <comment>Enter this token in Dotdigital Personalization to authenticate the connection.</comment>
                     <frontend_model>Dotdigitalgroup\Personalization\Block\Adminhtml\Config\AccessToken</frontend_model>

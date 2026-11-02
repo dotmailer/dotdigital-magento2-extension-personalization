@@ -43,4 +43,21 @@ interface StoreWebhookInterface
      * @throws LocalizedException
      */
     public function deleteStoreWebhook(): StoreWebhookResponseInterface;
+
+    /**
+     * Enable cart update sync (Personalization-controlled flag) for a specific store.
+     *
+     * @param string $webhookUrl
+     * @return \Dotdigitalgroup\Personalization\Api\StoreWebhookResponseInterface
+     * @throws LocalizedException
+     */
+    public function updateCartWebhook(string $webhookUrl): StoreWebhookResponseInterface;
+
+    /**
+     * Disable cart update sync (Fresh Relevance-controlled flag) for a specific store.
+     *
+     * @return \Dotdigitalgroup\Personalization\Api\StoreWebhookResponseInterface
+     * @throws LocalizedException
+     */
+    public function deleteCartWebhook(): StoreWebhookResponseInterface;
 }

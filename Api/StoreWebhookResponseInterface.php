@@ -16,6 +16,9 @@ interface StoreWebhookResponseInterface
     public const DATA_FR_ENABLED = 'fr_enabled';
     public const DATA_FR_WEBSITE_ID = 'fr_website_id';
     public const DATA_FR_REGION = 'fr_region';
+    public const DATA_CART_WEBHOOK_STATUS = 'cart_webhook_status';
+    public const DATA_CART_SYNC_ENABLED = 'cart_sync_enabled';
+    public const DATA_PRODUCT_SYNC_ENABLED = 'product_sync_enabled';
 
     /**
      * Get website ID.
@@ -86,4 +89,25 @@ interface StoreWebhookResponseInterface
      * @return string
      */
     public function getFrRegion();
+
+    /**
+     * Get the merchant-controlled cart update master switch status. Read-only from the API.
+     *
+     * @return bool
+     */
+    public function getCartWebhookStatus();
+
+    /**
+     * Get the Personalization-controlled cart sync enabled flag
+     *
+     * @return bool
+     */
+    public function getCartSyncEnabled();
+
+    /**
+     * Get the Personalization-controlled product sync enabled flag
+     *
+     * @return bool
+     */
+    public function getProductSyncEnabled();
 }

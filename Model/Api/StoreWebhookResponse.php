@@ -88,4 +88,28 @@ class StoreWebhookResponse extends DataObject implements StoreWebhookResponseInt
     {
         return $this->_getData(self::DATA_FR_REGION);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCartWebhookStatus(): bool
+    {
+        return (bool)$this->_getData(self::DATA_CART_WEBHOOK_STATUS);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCartSyncEnabled(): bool
+    {
+        return (bool)$this->_getData(self::DATA_CART_SYNC_ENABLED);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getProductSyncEnabled(): bool
+    {
+        return (bool)$this->_getData(self::DATA_PRODUCT_SYNC_ENABLED);
+    }
 }

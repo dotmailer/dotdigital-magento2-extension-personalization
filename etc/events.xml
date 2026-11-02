@@ -3,7 +3,16 @@
     <event name="catalog_product_save_after">
         <observer name="dd_personalization_product_save" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\ProductSave" />
     </event>
+    <event name="catalog_product_delete_before">
+        <observer name="dd_personalization_product_delete" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\ProductSave" />
+    </event>
     <event name="catalog_product_attribute_update_before">
         <observer name="dd_personalization_product_bulk_status_change" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\ProductBulkStatusChange" />
+    </event>
+    <event name="checkout_cart_save_after">
+        <observer name="dd_personalization_cart_update" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\CartUpdate" />
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="dd_personalization_cart_complete" instance="Dotdigitalgroup\Personalization\Observer\Webhooks\CartUpdate" />
     </event>
 </config>

@@ -154,6 +154,13 @@ class StoreWebhook implements StoreWebhookInterface
                 $store->getId()
             );
 
+            $this->configWriter->save(
+                ConfigInterface::CONFIG_PRODUCT_SYNC_ENABLED,
+                '1',
+                ScopeInterface::SCOPE_STORES,
+                $store->getId()
+            );
+
             $this->reinitableConfig->reinit();
 
             return $this->getStoreData($store);
@@ -165,6 +172,10 @@ class StoreWebhook implements StoreWebhookInterface
 
     /**
      * @inheritdoc
+     *
+     * Only removes the shared webhook URL if cart sync is not also currently enabled -
+     * otherwise cart update events would stop being sent too. See updateCartWebhook()
+     * for the mirror image of this behaviour.
      */
     public function deleteStoreWebhook(): StoreWebhookResponseInterface
     {
@@ -172,7 +183,57 @@ class StoreWebhook implements StoreWebhookInterface
             $store = $this->validateStoreContext();
 
             $this->configWriter->delete(
+                ConfigInterface::CONFIG_PRODUCT_SYNC_ENABLED,
+                ScopeInterface::SCOPE_STORES,
+                $store->getId()
+            );
+
+            if (!$this->isSyncEnabled(ConfigInterface::CONFIG_CART_SYNC_ENABLED, (int)$store->getId())) {
+                $this->configWriter->delete(
+                    ConfigInterface::CONFIG_WEBHOOK_ENDPOINT,
+                    ScopeInterface::SCOPE_STORES,
+                    $store->getId()
+                );
+            }
+
+            $this->reinitableConfig->reinit();
+
+            return $this->getStoreData($store);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to delete webhook configuration', ['error' => $e->getMessage()]);
+            throw $e;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Also (re-)registers the shared webhook URL if not already set, so cart sync can be
+     * enabled independently of product sync. Sets the Personalization-controlled
+     * cart_sync_enabled flag.
+     */
+    public function updateCartWebhook(string $webhookUrl): StoreWebhookResponseInterface
+    {
+        try {
+            $store = $this->validateStoreContext();
+            if (empty(trim($webhookUrl))) {
+                throw new LocalizedException(__('Webhook URL is required'));
+            }
+
+            if (!filter_var($webhookUrl, FILTER_VALIDATE_URL)) {
+                throw new LocalizedException(__('Invalid webhook URL format'));
+            }
+
+            $this->configWriter->save(
                 ConfigInterface::CONFIG_WEBHOOK_ENDPOINT,
+                $webhookUrl,
+                ScopeInterface::SCOPE_STORES,
+                $store->getId()
+            );
+
+            $this->configWriter->save(
+                ConfigInterface::CONFIG_CART_SYNC_ENABLED,
+                '1',
                 ScopeInterface::SCOPE_STORES,
                 $store->getId()
             );
@@ -181,7 +242,41 @@ class StoreWebhook implements StoreWebhookInterface
 
             return $this->getStoreData($store);
         } catch (\Exception $e) {
-            $this->logger->error('Failed to delete webhook configuration', ['error' => $e->getMessage()]);
+            $this->logger->error('Failed to enable cart sync configuration', ['error' => $e->getMessage()]);
+            throw $e;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Only removes the shared webhook URL if product sync is not also currently enabled -
+     * see deleteStoreWebhook() for the mirror image of this behaviour.
+     */
+    public function deleteCartWebhook(): StoreWebhookResponseInterface
+    {
+        try {
+            $store = $this->validateStoreContext();
+
+            $this->configWriter->delete(
+                ConfigInterface::CONFIG_CART_SYNC_ENABLED,
+                ScopeInterface::SCOPE_STORES,
+                $store->getId()
+            );
+
+            if (!$this->isSyncEnabled(ConfigInterface::CONFIG_PRODUCT_SYNC_ENABLED, (int)$store->getId())) {
+                $this->configWriter->delete(
+                    ConfigInterface::CONFIG_WEBHOOK_ENDPOINT,
+                    ScopeInterface::SCOPE_STORES,
+                    $store->getId()
+                );
+            }
+
+            $this->reinitableConfig->reinit();
+
+            return $this->getStoreData($store);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to disable cart sync configuration', ['error' => $e->getMessage()]);
             throw $e;
         }
     }
@@ -226,6 +321,18 @@ class StoreWebhook implements StoreWebhookInterface
     }
 
     /**
+     * Check whether a Personalization-controlled sync flag is currently enabled for a store.
+     *
+     * @param string $configPath
+     * @param int $storeId
+     * @return bool
+     */
+    private function isSyncEnabled(string $configPath, int $storeId): bool
+    {
+        return $this->scopeConfig->isSetFlag($configPath, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
      * Get store configuration data
      *
      * @param \Magento\Store\Api\Data\StoreInterface $store
@@ -245,6 +352,24 @@ class StoreWebhook implements StoreWebhookInterface
 
         $connected = (bool)$this->scopeConfig->getValue(
             ConfigInterface::CONFIG_API_CONNECTED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+
+        $cartConnected = (bool)$this->scopeConfig->getValue(
+            ConfigInterface::CONFIG_CART_API_CONNECTED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+
+        $cartSyncEnabled = (bool)$this->scopeConfig->getValue(
+            ConfigInterface::CONFIG_CART_SYNC_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+
+        $productSyncEnabled = (bool)$this->scopeConfig->getValue(
+            ConfigInterface::CONFIG_PRODUCT_SYNC_ENABLED,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -278,6 +403,9 @@ class StoreWebhook implements StoreWebhookInterface
             'fr_region' => $frRegion ?? '',
             'webhook_url' => $webhookUrl ?? '',
             'webhook_status' => $connected,
+            'cart_webhook_status' => $cartConnected,
+            'cart_sync_enabled' => $cartSyncEnabled,
+            'product_sync_enabled' => $productSyncEnabled,
         ];
 
         /** @var \Dotdigitalgroup\Personalization\Model\Api\StoreWebhookResponse $response */

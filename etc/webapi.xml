@@ -36,4 +36,16 @@
             <resource ref="Dotdigitalgroup_Personalization::configuration"/>
         </resources>
     </route>
+    <route url="/V1/dd-personalization/cart-webhook" method="POST">
+        <service class="Dotdigitalgroup\Personalization\Api\StoreWebhookInterface" method="updateCartWebhook"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
+    <route url="/V1/dd-personalization/cart-webhook" method="DELETE">
+        <service class="Dotdigitalgroup\Personalization\Api\StoreWebhookInterface" method="deleteCartWebhook"/>
+        <resources>
+            <resource ref="Dotdigitalgroup_Personalization::configuration"/>
+        </resources>
+    </route>
 </routes>
